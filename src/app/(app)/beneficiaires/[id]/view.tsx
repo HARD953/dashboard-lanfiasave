@@ -250,7 +250,7 @@ export default function PersonDetailPage({ id }: { id: string }) {
           <Card>
             <CardHeader
               title="Dernière enquête"
-              subtitle={latestSurvey ? `${latestSurvey.questionnaire_label} · ${formatDate(latestSurvey.collected_at, true)} · ${latestSurvey.collected_by_name ?? ""}` : undefined}
+              subtitle={latestSurvey ? `Formulaire ${latestSurvey.questionnaire_variant} · ${formatDate(latestSurvey.collected_at, true)} · ${latestSurvey.collected_by_name ?? ""}` : undefined}
             />
             {!latestSurvey || !questionnaire ? (
               <EmptyState icon={<FileText className="size-6" />} title="Aucune enquête">

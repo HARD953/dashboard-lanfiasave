@@ -81,6 +81,7 @@ export type SurveyResponse = {
   person: string;
   questionnaire: string;
   questionnaire_label: string;
+  questionnaire_variant: string;
   answers: Record<string, unknown>;
   collected_at: string;
   collected_by_name: string | null;
