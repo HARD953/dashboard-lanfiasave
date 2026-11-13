@@ -1,13 +1,51 @@
-# LanfiaSave — Portail web
+# LanfiaSave — Portail web (dashboard)
 
-Next.js (App Router) · TypeScript · Tailwind CSS.
+Portail des professionnels de la plateforme LanfiaSave 2.1 et site public institutionnel.
+Next.js 16 (App Router) · TypeScript · Tailwind CSS 4.
 
-Le navigateur ne voit jamais les jetons JWT : ils sont conservés dans des cookies `httpOnly`
-et toutes les requêtes passent par le relais `src/app/api/backend/[...path]`.
+Dépôts associés : `backend-lanfiasave` (API Django) et `app-mobile-lanfiasave` (applications Expo).
+
+## API
+
+Le portail est branché par défaut sur l'API de production :
+**https://backend-lanfiasave-uwy5.vercel.app/api/v1** (constante `PRODUCTION_API_URL`, `src/lib/server/backend.ts`).
+
+Le navigateur ne voit jamais l'API ni les jetons JWT : toutes les requêtes passent par le relais serveur
+`src/app/api/backend/[...path]`, et les jetons sont conservés dans des cookies `httpOnly`. Aucune configuration
+CORS n'est donc nécessaire côté API.
+
+Pour viser une autre API (développement local, préproduction), définir `API_INTERNAL_URL`
+(voir `.env.example`).
+
+## Démarrage
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173 (l'API Django doit tourner sur :8000)
+npm run dev        # http://localhost:5173
 ```
 
-Variables : `API_INTERNAL_URL` (URL de l'API vue du serveur Next.js, par défaut `http://localhost:8000/api/v1`).
+## Déploiement sur Vercel
+
+Importer le dépôt dans Vercel (framework détecté : Next.js). Aucune variable n'est obligatoire ; définir
+`API_INTERNAL_URL` uniquement pour pointer vers une autre API.
+
+## Écrans
+
+| Route | Contenu |
+|---|---|
+| `/` | Site public institutionnel |
+| `/connexion` | Connexion des professionnels |
+| `/tableau-de-bord` | Indicateurs calculés en direct |
+| `/beneficiaires` | Dossiers, création sans pièce d'identité, fiche avec score expliqué, doublons, accès bénéficiaire |
+| `/programmes` | Programmes, cycle de vie, règles d'éligibilité versionnées |
+| `/instruction` | Instruction, avis social, décision motivée du comité |
+| `/recours` | Traitement des recours |
+| `/audit` | Journal d'audit |
+
+Le menu s'adapte aux permissions du rôle de l'utilisateur.
+
+## Qualité
+
+```bash
+npx tsc --noEmit && npx eslint src && npm run build
+```

@@ -1,10 +1,16 @@
 import "server-only";
 
-/** URL de l'API Django vue depuis le serveur Next.js (jamais exposée au navigateur). */
+/** API de production (domaine stable Vercel, suit chaque nouveau déploiement du backend). */
+export const PRODUCTION_API_URL = "https://backend-lanfiasave-uwy5.vercel.app/api/v1";
+
+/**
+ * URL de l'API Django vue depuis le serveur Next.js (jamais exposée au navigateur).
+ * En local, définir API_INTERNAL_URL=http://localhost:8000/api/v1 dans .env.local.
+ */
 export const BACKEND_URL = (
   process.env.API_INTERNAL_URL ||
   process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:8000/api/v1"
+  PRODUCTION_API_URL
 ).replace(/\/$/, "");
 
 export const ACCESS_COOKIE = "lfs_access";
