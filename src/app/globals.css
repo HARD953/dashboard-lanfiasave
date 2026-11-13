@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+/*
+ * Charte LanfiaSave (cahier §15.2) : bleu nuit, turquoise, blanc et or discret.
+ * Le rouge est réservé aux alertes importantes.
+ */
+@theme {
+  --color-navy-950: #061226;
+  --color-navy-900: #0b1f3a;
+  --color-navy-800: #12305a;
+  --color-navy-700: #1b4378;
+  --color-navy-100: #e6edf7;
+  --color-navy-50: #f3f6fb;
+  --color-teal-700: #0b7f80;
+  --color-teal-600: #0e9595;
+  --color-teal-500: #13a8a8;
+  --color-teal-100: #d8f3f2;
+  --color-teal-50: #ecfaf9;
+  --color-gold-600: #a8841c;
+  --color-gold-500: #c9a227;
+  --color-gold-100: #f7efd3;
+  --color-ink: #0f1e33;
+  --color-muted: #5b6b7f;
+  --color-soft: #94a3b8;
+  --color-line: #dce3eb;
+  --color-canvas: #f4f6f9;
+  --color-danger: #b42318;
+  --color-danger-50: #fdecea;
+  --color-success: #15803d;
+  --color-success-50: #e7f5ec;
+  --color-warning: #b26a00;
+  --color-warning-50: #fff4e0;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --radius-card: 14px;
+}
+
+html,
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-teal-500);
+  outline-offset: 2px;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
