@@ -19,5 +19,8 @@ export const config = {
     "/instruction/:path*",
     "/recours/:path*",
     "/audit/:path*",
+    "/operations/:path*",
+    "/aides/:path*",
+    "/administration/:path*",
   ],
 };

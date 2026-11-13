@@ -1,10 +1,10 @@
 "use client";
 
-import { AlertTriangle, ClipboardCheck, FolderKanban, Scale, Users } from "lucide-react";
+import { AlertTriangle, ClipboardCheck, FolderKanban, HandHeart, Scale, Siren, Users } from "lucide-react";
 import Link from "next/link";
 import { Alert, Badge, Card, CardHeader, PageHeader, Spinner, Stat } from "@/components/ui";
 import { useApi } from "@/lib/api";
-import { APPLICATION_STATUS, BANDS, formatNumber } from "@/lib/format";
+import { APPLICATION_STATUS, BANDS, formatMoney, formatNumber } from "@/lib/format";
 import { useSession } from "@/lib/session";
 
 type Overview = {
@@ -17,6 +17,9 @@ type Overview = {
   appeals_open: number;
   score_bands: Record<string, number>;
   duplicates_open: number;
+  vulnerabilities: { code: string; label: string; persons: number }[];
+  operations: { active: number; total: number; affected_persons: number; affected_without_aid: number; lost_contact: number };
+  assistance: { delivered: number; planned: number; delivered_amount: number; persons_helped: number };
 };
 
 function Bar({ label, value, total, tone }: { label: string; value: number; total: number; tone: string }) {
@@ -89,6 +92,46 @@ export default function DashboardPage() {
         />
       </div>
 
+      <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <Stat
+          label="Opérations en cours"
+          value={formatNumber(data.operations.active)}
+          hint="déguerpissements, sinistres, sites miniers…"
+          icon={<Siren className="size-5" />}
+          accent="danger"
+        />
+        <Stat
+          label="Personnes affectées suivies"
+          value={formatNumber(data.operations.affected_persons)}
+          hint={`${formatNumber(data.operations.affected_without_aid)} encore sans aucune aide`}
+          icon={<Users className="size-5" />}
+          accent={data.operations.affected_without_aid ? "danger" : "teal"}
+        />
+        <Stat
+          label="Aides remises"
+          value={formatNumber(data.assistance.delivered)}
+          hint={`${formatNumber(data.assistance.persons_helped)} personnes aidées · ${formatNumber(data.assistance.planned)} planifiées`}
+          icon={<HandHeart className="size-5" />}
+          accent="teal"
+        />
+        <Stat
+          label="Valeur des aides remises"
+          value={formatMoney(data.assistance.delivered_amount)}
+          icon={<HandHeart className="size-5" />}
+          accent="gold"
+        />
+      </div>
+
+      {data.operations.lost_contact > 0 && (
+        <div className="mt-6">
+          <Alert tone="danger" title={`${data.operations.lost_contact} personne(s) affectée(s) perdue(s) de vue`}>
+            <Link href="/operations" className="font-semibold underline">
+              Voir les opérations
+            </Link>
+          </Alert>
+        </div>
+      )}
+
       {data.duplicates_open > 0 && (
         <div className="mt-6">
           <Alert tone="warning" title={`${data.duplicates_open} dossier(s) avec un doublon possible`}>
@@ -138,6 +181,17 @@ export default function DashboardPage() {
           </div>
         </Card>
       </div>
+
+      {data.vulnerabilities.length > 0 && (
+        <Card className="mt-6">
+          <CardHeader title="Situations de vulnérabilité les plus fréquentes" subtitle="Personnes concernées (hors catégories sensibles)." />
+          <div className="grid gap-x-8 gap-y-4 p-5 md:grid-cols-2">
+            {data.vulnerabilities.map((v) => (
+              <Bar key={v.code} label={v.label} value={v.persons} total={data.persons.total} tone="bg-navy-700" />
+            ))}
+          </div>
+        </Card>
+      )}
 
       <Card className="mt-6">
         <CardHeader title="Décisions en vigueur" />

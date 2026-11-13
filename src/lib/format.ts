@@ -30,7 +30,27 @@ export const STATUS_TONE: Record<string, Tone> = {
   open: "warning",
   upheld: "success",
   dismissed: "neutral",
+  // opérations et dossiers
+  announced: "gold",
+  ongoing: "danger",
+  response: "info",
+  identified: "warning",
+  assessed: "info",
+  supported: "success",
+  relocated: "success",
+  lost_contact: "danger",
+  // aides et vulnérabilités
+  planned: "warning",
+  delivered: "success",
+  cancelled: "neutral",
+  suspected: "warning",
+  confirmed: "danger",
+  resolved: "neutral",
 };
+
+export function labelOf(options: { value: string; label: string }[] | undefined, value?: string | null) {
+  return options?.find((o) => o.value === value)?.label ?? value ?? "—";
+}
 
 export const APPLICATION_STATUS: Record<string, string> = {
   submitted: "Déposée",

@@ -12,6 +12,9 @@ type Session = {
   organizations: { id: string; name: string }[];
   membershipsInOrg: Membership[];
   can: (perm: string) => boolean;
+  /** Super-administrateur de la plateforme (gère toutes les organisations, sans accès implicite aux données). */
+  isPlatformAdmin: boolean;
+  refresh: () => Promise<unknown>;
   logout: () => Promise<void>;
 };
 
@@ -19,7 +22,7 @@ const SessionContext = createContext<Session | null>(null);
 const ORG_KEY = "lfs.organization";
 
 export function SessionProvider({ children }: { children: React.ReactNode }) {
-  const { data: me, isLoading } = useApi<Me>("auth/me/");
+  const { data: me, isLoading, mutate } = useApi<Me>("auth/me/");
   const [chosen, setChosen] = useState<string | null>(() => {
     if (typeof window === "undefined") return null;
     try {
@@ -63,7 +66,18 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <SessionContext.Provider
-      value={{ me, loading: isLoading, organizationId, setOrganizationId, organizations, membershipsInOrg, can, logout }}
+      value={{
+        me,
+        loading: isLoading,
+        organizationId,
+        setOrganizationId,
+        organizations,
+        membershipsInOrg,
+        can,
+        isPlatformAdmin: !!me?.is_superuser,
+        refresh: mutate,
+        logout,
+      }}
     >
       {children}
     </SessionContext.Provider>

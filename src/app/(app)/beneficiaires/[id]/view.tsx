@@ -21,6 +21,7 @@ import {
 import { ApiError, api, useApi, type Paginated } from "@/lib/api";
 import { BANDS, SEX, STATUS_TONE, formatDate } from "@/lib/format";
 import { useSession } from "@/lib/session";
+import { AidPanel, OperationCasesPanel, VulnerabilityPanel } from "@/components/person-panels";
 import type { Application, Person, Program, Questionnaire, ScoreResult, SurveyResponse } from "@/lib/types";
 
 const RECORD_ACTIONS: Record<string, { to: string; label: string; perm: string }[]> = {
@@ -165,6 +166,8 @@ export default function PersonDetailPage({ id }: { id: string }) {
             </div>
           </Card>
 
+          <VulnerabilityPanel personId={person.id} />
+          <AidPanel personId={person.id} personName={person.display_name} />
           <Card>
             <CardHeader
               title="Évaluation de vulnérabilité"
@@ -278,6 +281,7 @@ export default function PersonDetailPage({ id }: { id: string }) {
         </div>
 
         <div className="space-y-6">
+          <OperationCasesPanel personId={person.id} />
           {openDup.length > 0 && (
             <Card className="border-warning/40">
               <CardHeader title={<span className="flex items-center gap-2 text-warning"><ShieldAlert className="size-4" /> Doublons possibles</span>} />

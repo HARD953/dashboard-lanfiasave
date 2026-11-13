@@ -14,6 +14,8 @@ export type Me = {
   username: string;
   full_name: string;
   kind: "staff" | "beneficiary";
+  is_superuser: boolean;
+  must_change_password: boolean;
   memberships: Membership[];
 };
 
@@ -171,4 +173,186 @@ export type Questionnaire = {
     }[];
     special_values: Record<string, string>;
   };
+};
+
+export type Option = { value: string; label: string };
+
+export type Catalogs = {
+  vulnerabilities: { code: string; label: string; group: string; group_label: string; sensitive: boolean }[];
+  assistance_categories: Option[];
+  delivery_channels: Option[];
+  operation_kinds: Option[];
+  operation_statuses: Option[];
+  case_statuses: Option[];
+  case_needs: Option[];
+  occupancy: Option[];
+  partner_kinds: Option[];
+};
+
+export type Partner = {
+  id: string;
+  organization: string;
+  name: string;
+  acronym: string;
+  kind: string;
+  kind_label: string;
+  contact_name: string;
+  phone: string;
+  email: string;
+  notes: string;
+  is_active: boolean;
+};
+
+export type Operation = {
+  id: string;
+  organization: string;
+  code: string;
+  title: string;
+  kind: string;
+  kind_label: string;
+  status: string;
+  status_label: string;
+  description: string;
+  initiated_by: string | null;
+  initiated_by_name: string | null;
+  partners: string[];
+  partners_detail: Partner[];
+  territory: string | null;
+  territory_name: string | null;
+  sites: string;
+  legal_reference: string;
+  notice_date: string | null;
+  start_date: string | null;
+  end_date: string | null;
+  estimated_households: number | null;
+  compensation_policy: string;
+  compensation_amount_per_household: string | null;
+  persons_count: number;
+  created_at: string;
+};
+
+export type OperationStats = {
+  persons: number;
+  households: number;
+  by_status: Record<string, number>;
+  lost_housing: number;
+  lost_livelihood: number;
+  lost_documents: number;
+  children_schooling_disrupted: number;
+  needs: Record<string, number>;
+  persons_helped: number;
+  persons_without_aid: number;
+  persons_compensated: number;
+  compensation_due_total: number;
+  aid_delivered_amount: number;
+  aid_planned_amount: number;
+  aid_by_category: Record<string, number>;
+  lost_contact: number;
+};
+
+export type OperationCase = {
+  id: string;
+  operation: string;
+  operation_title: string;
+  operation_code: string;
+  operation_kind: string;
+  person: string;
+  person_name: string;
+  person_code: string;
+  person_phone: string;
+  household: string | null;
+  household_code: string | null;
+  case_number: string;
+  status: string;
+  status_label: string;
+  occupancy: string;
+  occupancy_label: string;
+  lost_housing: boolean;
+  lost_livelihood: boolean;
+  lost_documents: boolean;
+  children_schooling_disrupted: boolean;
+  lost_assets: string;
+  needs: string[];
+  needs_labels: string[];
+  current_location: string;
+  relocation_site: string;
+  compensation_due: string | null;
+  notes: string;
+  last_contact_at: string | null;
+  aid_summary: { delivered: number; planned: number; delivered_amount: number };
+  created_at: string;
+};
+
+export type Assistance = {
+  id: string;
+  person: string;
+  person_name: string;
+  person_code: string;
+  operation_case: string | null;
+  operation_title: string | null;
+  program: string | null;
+  program_name: string | null;
+  provider: string | null;
+  provider_name: string | null;
+  category: string;
+  category_label: string;
+  description: string;
+  quantity: string | null;
+  unit: string;
+  amount: string | null;
+  status: "planned" | "delivered" | "cancelled";
+  status_label: string;
+  planned_date: string | null;
+  delivered_at: string | null;
+  delivery_proof: string;
+  delivery_channel: string;
+  cancel_reason: string;
+  recorded_by_name: string | null;
+  delivered_by_name: string | null;
+  created_at: string;
+};
+
+export type Vulnerability = {
+  id: string;
+  person: string;
+  category: string;
+  label: string;
+  group: string;
+  status: "suspected" | "confirmed" | "resolved";
+  status_label: string;
+  source: string;
+  source_label: string;
+  notes: string;
+  operation_title: string | null;
+  recorded_by_name: string | null;
+  created_at: string;
+};
+
+export type AdminUser = {
+  id: string;
+  username: string;
+  first_name: string;
+  last_name: string;
+  full_name: string;
+  email: string;
+  phone: string;
+  is_active: boolean;
+  is_superuser: boolean;
+  must_change_password: boolean;
+  last_login: string | null;
+  memberships: { id: string; organization: string; organization_name: string; role: string; role_label: string }[];
+  temporary_password?: string;
+};
+
+export type RoleInfo = { value: string; label: string; permissions: { code: string; label: string }[] };
+
+export type AdminOrganization = {
+  id: string;
+  code: string;
+  name: string;
+  kind: string;
+  country: string;
+  status: string;
+  members_count: number;
+  created_at: string;
 };

@@ -5,12 +5,20 @@ import { useState } from "react";
 import { Alert, Button, Card, CardHeader, Field, Input, PageHeader, Select } from "@/components/ui";
 import { ApiError, api, useApi } from "@/lib/api";
 import { useSession } from "@/lib/session";
-import type { Person, Territory } from "@/lib/types";
+import type { Operation, Person, Territory } from "@/lib/types";
+import type { Paginated } from "@/lib/api";
 
 export default function NewPersonPage() {
   const router = useRouter();
   const { organizationId } = useSession();
   const { data: territories } = useApi<Territory[]>("territories/?level=commune");
+  const { can } = useSession();
+  const { data: operations } = useApi<Paginated<Operation>>(
+    organizationId && can("operation.enroll") ? `operations/?organization=${organizationId}` : null,
+  );
+  const [operation, setOperation] = useState<string>(() =>
+    typeof window === "undefined" ? "" : (new URLSearchParams(window.location.search).get("operation") ?? ""),
+  );
   const [form, setForm] = useState({
     first_name: "",
     last_name: "",
@@ -44,7 +52,12 @@ export default function NewPersonPage() {
           territory: form.territory || null,
         },
       });
-      router.push(`/beneficiaires/${person.id}`);
+      if (operation) {
+        await api(`operations/${operation}/enroll/`, { method: "POST", json: { person: person.id } });
+        router.push(`/operations/${operation}`);
+      } else {
+        router.push(`/beneficiaires/${person.id}`);
+      }
     } catch (err) {
       setError(err instanceof ApiError ? err.readable : "Enregistrement impossible.");
       setSaving(false);
@@ -113,6 +126,22 @@ export default function NewPersonPage() {
                 <option value="unknown">Inconnu</option>
               </Select>
             </Field>
+            {!!operations?.results.length && (
+              <div className="sm:col-span-2">
+                <Field label="Personne affectée par une opération" hint="Déguerpissement, sinistre, site minier… Un dossier d'accompagnement sera ouvert.">
+                  <Select value={operation} onChange={(e) => setOperation(e.target.value)}>
+                    <option value="">— Aucune —</option>
+                    {operations.results
+                      .filter((o) => o.status !== "closed")
+                      .map((o) => (
+                        <option key={o.id} value={o.id}>
+                          {o.title}
+                        </option>
+                      ))}
+                  </Select>
+                </Field>
+              </div>
+            )}
             <Field label="Contexte d'enrôlement">
               <Select value={form.enrollment_context} onChange={set("enrollment_context")}>
                 <option value="standard">Standard</option>

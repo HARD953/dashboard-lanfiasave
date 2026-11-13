@@ -4,11 +4,14 @@ import clsx from "clsx";
 import {
   ClipboardCheck,
   FolderKanban,
+  HandHeart,
   LayoutDashboard,
   LogOut,
   Menu,
   ScrollText,
   Scale,
+  Settings,
+  Siren,
   Users,
   X,
 } from "lucide-react";
@@ -16,24 +19,34 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense, useState, type ReactNode } from "react";
 import { useSession } from "@/lib/session";
+import { ChangePasswordGate } from "./change-password";
 import { Logo } from "./brand";
 import { Select } from "./ui";
 
-const NAV = [
-  { href: "/tableau-de-bord", label: "Tableau de bord", icon: LayoutDashboard, perm: "report.aggregate" },
-  { href: "/beneficiaires", label: "Bénéficiaires", icon: Users, perm: "person.view" },
-  { href: "/programmes", label: "Programmes", icon: FolderKanban, perm: "program.view" },
-  { href: "/instruction", label: "Instruction & comité", icon: ClipboardCheck, perm: "application.view" },
-  { href: "/recours", label: "Recours", icon: Scale, perm: "application.view" },
-  { href: "/audit", label: "Journal d'audit", icon: ScrollText, perm: "audit.view" },
+type Visible = (s: { can: (p: string) => boolean; isPlatformAdmin: boolean }) => boolean;
+const NAV: { href: string; label: string; icon: typeof Users; visible: Visible }[] = [
+  { href: "/tableau-de-bord", label: "Tableau de bord", icon: LayoutDashboard, visible: (s) => s.can("report.aggregate") },
+  { href: "/beneficiaires", label: "Bénéficiaires", icon: Users, visible: (s) => s.can("person.view") },
+  { href: "/operations", label: "Opérations & sinistres", icon: Siren, visible: (s) => s.can("operation.view") },
+  { href: "/aides", label: "Aides apportées", icon: HandHeart, visible: (s) => s.can("assistance.view") },
+  { href: "/programmes", label: "Programmes", icon: FolderKanban, visible: (s) => s.can("program.view") },
+  { href: "/instruction", label: "Instruction & comité", icon: ClipboardCheck, visible: (s) => s.can("application.view") },
+  { href: "/recours", label: "Recours", icon: Scale, visible: (s) => s.can("application.view") },
+  { href: "/audit", label: "Journal d'audit", icon: ScrollText, visible: (s) => s.can("audit.view") },
+  {
+    href: "/administration",
+    label: "Administration",
+    icon: Settings,
+    visible: (s) => s.isPlatformAdmin || s.can("user.manage") || s.can("partner.manage"),
+  },
 ];
 
 function NavLinks({ onNavigate }: { onNavigate: () => void }) {
-  const { can } = useSession();
+  const session = useSession();
   const pathname = usePathname();
   return (
     <>
-      {NAV.filter((n) => can(n.perm)).map((item) => {
+      {NAV.filter((n) => n.visible(session)).map((item) => {
         const active = pathname.startsWith(item.href);
         return (
           <Link
@@ -57,11 +70,14 @@ function NavLinks({ onNavigate }: { onNavigate: () => void }) {
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
-  const { me, loading, can, organizations, organizationId, setOrganizationId, membershipsInOrg, logout } = useSession();
+  const session = useSession();
+  const { me, loading, organizations, organizationId, setOrganizationId, membershipsInOrg, logout } = session;
   const [open, setOpen] = useState(false);
 
-  const hasAccess = NAV.some((n) => can(n.perm));
-  const roles = membershipsInOrg.map((m) => m.role_label).join(" · ");
+  const hasAccess = NAV.some((n) => n.visible(session));
+  const roles = session.isPlatformAdmin
+    ? "Administrateur de la plateforme"
+    : membershipsInOrg.map((m) => m.role_label).join(" · ");
 
   const sidebar = (
     <div className="flex h-full flex-col bg-navy-900 text-white">
@@ -123,7 +139,9 @@ export function AppShell({ children }: { children: ReactNode }) {
           <Logo />
         </header>
         <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-          {!loading && me && !hasAccess ? (
+          {me?.must_change_password ? (
+            <ChangePasswordGate />
+          ) : !loading && me && !hasAccess ? (
             <p className="text-sm text-muted">
               Votre compte n&apos;a encore aucune habilitation dans cette organisation. Contactez votre administrateur.
             </p>
