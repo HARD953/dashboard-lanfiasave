@@ -66,7 +66,7 @@ export default function VisitsPage() {
           )}
         </Card>
         <Card>
-          <CardHeader title="Ménages à revisiter" subtitle="Mise à jour périodique du registre (pratique du Cadastro Único brésilien : tous les 2 ans)." />
+          <CardHeader title="Ménages à revisiter" subtitle="Situation à remettre à jour : dernière évaluation il y a plus de 2 ans." />
           {!agenda.data?.households_to_recertify.length ? (
             <EmptyState icon={<Home className="size-5" />} title="Tous les ménages sont à jour" />
           ) : (

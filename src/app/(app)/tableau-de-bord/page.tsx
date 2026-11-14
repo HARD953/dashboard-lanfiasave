@@ -1,8 +1,10 @@
 "use client";
 
-import { AlertTriangle, ClipboardCheck, FolderKanban, HandHeart, Scale, Siren, Users } from "lucide-react";
+import { AlertTriangle, ArrowRight, ClipboardCheck, FolderKanban, HandHeart, Scale, Siren, Users } from "lucide-react";
 import Link from "next/link";
-import { Alert, Badge, Card, CardHeader, PageHeader, Spinner, Stat } from "@/components/ui";
+import { PhotoBanner } from "@/components/photo";
+import { GapList, pct, type PovertyReport } from "@/components/poverty";
+import { Alert, Badge, Card, CardHeader, Spinner, Stat } from "@/components/ui";
 import { useApi } from "@/lib/api";
 import { APPLICATION_STATUS, BANDS, formatMoney, formatNumber } from "@/lib/format";
 import { useSession } from "@/lib/session";
@@ -42,6 +44,7 @@ function Bar({ label, value, total, tone }: { label: string; value: number; tota
 export default function DashboardPage() {
   const { me, organizationId } = useSession();
   const { data, isLoading, error } = useApi<Overview>(organizationId ? `reports/overview/?organization=${organizationId}` : null);
+  const { data: poverty } = useApi<PovertyReport>(organizationId ? `reports/poverty/?organization=${organizationId}` : null);
 
   if (isLoading || !organizationId) return <Spinner />;
   if (error || !data) return <Alert tone="danger">{error?.message ?? "Indicateurs indisponibles."}</Alert>;
@@ -57,10 +60,40 @@ export default function DashboardPage() {
 
   return (
     <>
-      <PageHeader
-        title={`Bonjour ${me?.full_name.split(" ")[0] ?? ""}`}
-        subtitle="Indicateurs calculés en direct sur les données de votre organisation."
-      />
+      <PhotoBanner id="marche" eyebrow="Tableau de bord" title={`Bonjour ${me?.full_name.split(" ")[0] ?? ""}`}>
+        Où en est la lutte contre la pauvreté dans votre zone, et quels besoins attendent encore une réponse.
+        Indicateurs calculés en direct sur les données de votre organisation.
+      </PhotoBanner>
+
+      {poverty && poverty.summary.assessed > 0 && (
+        <Card className="mb-6">
+          <CardHeader
+            title="Lutte contre la pauvreté"
+            subtitle={`${formatNumber(poverty.summary.assessed)} ménages évalués avec l'indice à 5 dimensions`}
+            action={
+              <Link href="/pauvrete" className="inline-flex items-center gap-1 text-sm font-semibold text-teal-700 hover:underline">
+                Analyse complète <ArrowRight className="size-4" />
+              </Link>
+            }
+          />
+          <div className="grid grid-cols-2 gap-px border-b border-line bg-line lg:grid-cols-4">
+            {[
+              ["Ménages pauvres", pct(poverty.summary.poverty_rate), `${formatNumber(poverty.summary.poor)} ménages`],
+              ["Pauvreté sévère", pct(poverty.summary.severe_rate), `${formatNumber(poverty.summary.severe)} ménages`],
+              ["Pauvres ayant reçu une aide", pct(poverty.summary.poor_coverage_rate), "sur les 12 derniers mois"],
+              ["Sorties de pauvreté", pct(poverty.trajectories.exit_rate), `${formatNumber(poverty.trajectories.exited)} ménages réévalués`],
+            ].map(([l, v, h]) => (
+              <div key={l} className="bg-white px-5 py-4">
+                <p className="text-sm text-muted">{l}</p>
+                <p className="tabular mt-1 text-2xl font-bold text-navy-900">{v}</p>
+                <p className="text-xs text-muted">{h}</p>
+              </div>
+            ))}
+          </div>
+          <p className="px-5 pt-4 text-xs font-semibold uppercase tracking-wider text-muted">Problèmes à traiter en priorité</p>
+          <GapList gaps={poverty.gaps} limit={4} />
+        </Card>
+      )}
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <Stat

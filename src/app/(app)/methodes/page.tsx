@@ -1,59 +1,60 @@
-import { Globe2 } from "lucide-react";
-import { Card, CardHeader, PageHeader } from "@/components/ui";
+import { BarChart3, ClipboardList, HandCoins, MessageSquareWarning, Route, Scale, Target, Users } from "lucide-react";
+import { Photo, PhotoBanner } from "@/components/photo";
+import { Card, CardHeader } from "@/components/ui";
 
-const REFERENCES = [
+const STEPS = [
   {
-    country: "Brésil",
-    program: "Cadastro Único & Bolsa Família",
-    idea: "Un registre social unique partagé par tous les programmes, mis à jour au moins tous les 2 ans.",
-    here: "Registre unique des personnes et ménages, revisite signalée après 24 mois (Visites & agenda).",
+    icon: Users,
+    title: "Identifier les ménages",
+    problem: "Beaucoup de ménages pauvres ne sont connus d'aucun service : pas de papiers, pas de téléphone, habitat informel.",
+    how: "Recensement terrain hors connexion, sans pièce d'identité exigée, avec trois formulaires selon l'urgence (express, standard, complet).",
   },
   {
-    country: "Brésil · Chili",
-    program: "SUAS / PAIF · Chile Solidario",
-    idea: "Accompagnement familial par un référent, visites régulières, orientation vers les services publics.",
-    here: "Comptes rendus de visite, évolution de la situation, orientations avec retour du service.",
+    icon: BarChart3,
+    title: "Mesurer la pauvreté",
+    problem: "Le revenu seul ne dit pas tout : un ménage peut manger à sa faim mais n'avoir ni école, ni CMU, ni acte de naissance.",
+    how: "Indice à 5 dimensions (revenus, alimentation, logement, éducation, santé et état civil) calculé pour chaque ménage, avec taux, intensité et IPM.",
   },
   {
-    country: "Kenya",
-    program: "Inua Jamii · Enhanced Single Registry",
-    idea: "Mécanisme de plaintes accessible (ligne verte, comités locaux), délais de réponse suivis.",
-    here: "Plaintes multicanal, références, délais selon la gravité, escalade et taux de réponse dans les délais.",
+    icon: Scale,
+    title: "Décider avec équité",
+    problem: "Des listes faites à la main laissent de côté des ménages et exposent à la fraude et au favoritisme.",
+    how: "Score consultatif et expliqué, décision humaine motivée en comité, droit de recours ; part des aides qui vont aux ménages pauvres suivie.",
   },
   {
-    country: "Philippines",
-    program: "Pantawid 4Ps · Listahanan",
-    idea: "Ciblage par score explicable, validation communautaire, traitement des réclamations d'exclusion.",
-    here: "Score consultatif et expliqué, décision humaine motivée, recours et plaintes « exclusion ».",
+    icon: HandCoins,
+    title: "Apporter l'aide et la prouver",
+    problem: "Les aides promises n'arrivent pas toujours, et personne ne peut le vérifier.",
+    how: "Chaque aide est rattachée à une structure, une date et une preuve (reçu, n° de transaction mobile money).",
   },
   {
-    country: "Sénégal",
-    program: "Registre National Unifié (RNU)",
-    idea: "Registre national interopérable, utilisé par plusieurs ministères et partenaires.",
-    here: "Organisations et structures partenaires, identifiants opaques, exports agrégés.",
+    icon: Route,
+    title: "Orienter vers les services",
+    problem: "Un enfant sans acte de naissance ne passera pas l'examen ; un ménage sans CMU s'endette au premier soin.",
+    how: "Orientations vers l'état civil, l'ONECI, la CMU, l'école, les centres de santé, l'AEJ ; une orientation n'est close qu'avec le retour du service.",
   },
   {
-    country: "Côte d'Ivoire",
-    program: "RSU · Filets sociaux productifs · CMU",
-    idea: "Ciblage des ménages pauvres, transferts monétaires, couverture maladie universelle.",
-    here: "Orientations CMU et état civil, aides tracées avec preuve, situations de vulnérabilité ivoiriennes.",
+    icon: ClipboardList,
+    title: "Suivre dans la durée",
+    problem: "Une aide ponctuelle ne fait pas sortir de la pauvreté ; sans suivi, on ne sait pas si la situation change.",
+    how: "Visites régulières, réévaluation au moins tous les 24 mois, trajectoires : ménages sortis, tombés ou restés dans la pauvreté.",
   },
   {
-    country: "Bangladesh · international",
-    program: "Approche de « graduation » (BRAC)",
-    idea: "Aide d'urgence, puis actif productif, formation et accompagnement jusqu'à l'autonomie.",
-    here: "Programmes, formation, AGR, aides par étapes et suivi de l'évolution à chaque visite.",
+    icon: MessageSquareWarning,
+    title: "Écouter les personnes",
+    problem: "Les personnes aidées n'osent pas se plaindre, surtout en cas d'abus ou de demande d'argent.",
+    how: "Plaintes depuis l'app Mon Parcours, par téléphone ou au guichet ; délais de 3, 10 ou 30 jours selon la gravité ; avis de la personne sur la réponse.",
   },
   {
-    country: "Standards",
-    program: "Banque mondiale (NES 5) · IASC · Sphère",
-    idea: "Réinstallation involontaire, protection contre l'exploitation et les abus sexuels, normes humanitaires.",
-    here: "Opérations de déguerpissement, indemnisations, plaintes EAS confidentielles, aides d'urgence.",
+    icon: Target,
+    title: "Rendre compte",
+    problem: "Les bailleurs et l'État demandent des résultats, pas seulement des activités.",
+    how: "Cadre de suivi de 19 indicateurs (impact, effets, mise en œuvre, redevabilité), avec valeur de référence et cible pour chacun.",
   },
 ];
 
 const PRINCIPLES = [
-  ["Ne pas nuire", "Aucune donnée sensible exposée sans habilitation ; plaintes EAS et fraude confidentielles."],
+  ["Ne pas nuire", "Aucune donnée sensible exposée sans habilitation ; plaintes d'abus et de fraude confidentielles."],
   ["Décision humaine", "Le score éclaire, il ne décide pas. Toute décision est motivée et peut faire l'objet d'un recours."],
   ["Redevabilité", "Chaque plainte reçoit une réponse écrite dans un délai connu ; chaque aide a une preuve."],
   ["Continuité", "Une orientation n'est close qu'avec le retour du service ; un ménage est revu régulièrement."],
@@ -63,34 +64,42 @@ const PRINCIPLES = [
 export default function MethodsPage() {
   return (
     <>
-      <PageHeader
-        title="Méthodes & références"
-        subtitle="Les fonctionnalités de LanfiaSave s'inspirent de programmes de protection sociale reconnus, adaptés au contexte ivoirien."
-      />
+      <PhotoBanner id="village" eyebrow="Méthodes" title="À quel problème répond chaque fonction">
+        LanfiaSave part des difficultés concrètes rencontrées sur le terrain en Côte d&apos;Ivoire, de l&apos;identification
+        des ménages jusqu&apos;à la sortie de la pauvreté.
+      </PhotoBanner>
       <div className="grid gap-4 md:grid-cols-2">
-        {REFERENCES.map((r) => (
-          <Card key={r.program} className="p-5">
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gold-600">
-              <Globe2 className="size-4" /> {r.country}
+        {STEPS.map((s, i) => (
+          <Card key={s.title} className="p-5">
+            <div className="flex items-center gap-3">
+              <span className="grid size-9 place-items-center rounded-lg bg-teal-50 text-teal-700">
+                <s.icon className="size-5" />
+              </span>
+              <span className="text-xs font-semibold text-gold-600">0{i + 1}</span>
+              <p className="font-semibold text-navy-900">{s.title}</p>
             </div>
-            <p className="mt-2 font-semibold text-navy-900">{r.program}</p>
-            <p className="mt-1 text-sm text-muted">{r.idea}</p>
-            <p className="mt-3 rounded-lg bg-teal-50 px-3 py-2 text-sm text-teal-700">
-              <b>Dans LanfiaSave :</b> {r.here}
+            <p className="mt-3 text-sm text-muted">
+              <b className="text-ink">Le problème :</b> {s.problem}
+            </p>
+            <p className="mt-2 rounded-lg bg-teal-50 px-3 py-2 text-sm text-teal-700">
+              <b>Dans LanfiaSave :</b> {s.how}
             </p>
           </Card>
         ))}
       </div>
-      <Card className="mt-6">
-        <CardHeader title="Nos principes de travail" />
-        <ul className="divide-y divide-line">
-          {PRINCIPLES.map(([t, d]) => (
-            <li key={t} className="px-5 py-3 text-sm">
-              <b className="text-ink">{t}.</b> <span className="text-muted">{d}</span>
-            </li>
-          ))}
-        </ul>
-      </Card>
+      <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_1.3fr]">
+        <Photo id="ecole" className="min-h-64 rounded-card" />
+        <Card>
+          <CardHeader title="Nos principes de travail" />
+          <ul className="divide-y divide-line">
+            {PRINCIPLES.map(([t, d]) => (
+              <li key={t} className="px-5 py-3 text-sm">
+                <b className="text-ink">{t}.</b> <span className="text-muted">{d}</span>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      </div>
     </>
   );
 }

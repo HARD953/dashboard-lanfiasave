@@ -4,7 +4,6 @@ import {
   Building2,
   CalendarCheck,
   CheckCircle2,
-  Globe2,
   GraduationCap,
   HandCoins,
   HandHeart,
@@ -24,6 +23,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { Logo } from "@/components/brand";
+import { Photo } from "@/components/photo";
 
 const STEPS = [
   { icon: Users, title: "Identifier", text: "Recensement des ménages, même sans pièce d'identité ni téléphone, avec un formulaire adapté à chaque situation." },
@@ -41,13 +41,10 @@ const AUDIENCES = [
   { icon: Sprout, title: "Entreprises (RSE, mines)", text: "Gérer la réinstallation et les indemnisations selon les standards internationaux." },
 ];
 
-const INSPIRATIONS = [
-  ["Brésil", "Registre unique mis à jour tous les 2 ans"],
-  ["Kenya", "Plaintes multicanal avec délais suivis"],
-  ["Philippines", "Ciblage explicable et validation locale"],
-  ["Chili", "Accompagnement familial et orientation"],
-  ["Sénégal", "Registre national unifié et partagé"],
-  ["Bangladesh", "Approche de « graduation » vers l'autonomie"],
+const POVERTY_PILLARS = [
+  { photo: "plantation" as const, title: "Mesurer", text: "Un indice à 5 dimensions par ménage : revenus, alimentation, logement, éducation, santé et état civil." },
+  { photo: "karite" as const, title: "Agir là où ça compte", text: "Les besoins sans réponse sont listés : faim, enfants non scolarisés, absence de CMU ou d'acte de naissance." },
+  { photo: "ecole" as const, title: "Suivre qui en sort", text: "Chaque ménage est réévalué : on voit qui sort de la pauvreté, qui y tombe, et pourquoi." },
 ];
 
 function Check({ children }: { children: React.ReactNode }) {
@@ -148,7 +145,7 @@ export default function Home() {
             <a href="#plateforme" className="hover:text-navy-900">Plateforme</a>
             <a href="#terrain" className="hover:text-navy-900">Terrain</a>
             <a href="#crises" className="hover:text-navy-900">Crises & déguerpissements</a>
-            <a href="#references" className="hover:text-navy-900">Références</a>
+            <a href="#pauvrete" className="hover:text-navy-900">Pauvreté</a>
           </nav>
           <Link href="/connexion" className="inline-flex h-10 items-center gap-2 rounded-lg bg-navy-900 px-4 text-sm font-semibold text-white hover:bg-navy-800">
             Espace professionnel <ArrowRight className="size-4" />
@@ -312,25 +309,37 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Références */}
-      <section id="references" className="mx-auto max-w-6xl scroll-mt-20 px-6 py-20">
-        <div className="flex flex-wrap items-end justify-between gap-4">
+      {/* Lutte contre la pauvreté */}
+      <section id="pauvrete" className="mx-auto max-w-6xl scroll-mt-20 px-6 py-20">
+        <div className="grid items-end gap-8 lg:grid-cols-[1.2fr_1fr]">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-gold-600">Bonnes pratiques internationales</p>
-            <h2 className="mt-2 text-3xl font-bold text-navy-900">Inspirée de ce qui marche ailleurs</h2>
+            <p className="text-xs font-semibold uppercase tracking-widest text-gold-600">Lutte contre la pauvreté</p>
+            <h2 className="mt-2 text-3xl font-bold text-navy-900">Savoir si la pauvreté recule, ménage par ménage</h2>
             <p className="mt-3 max-w-2xl text-muted">
-              Les méthodes des grands programmes de protection sociale, adaptées au contexte ivoirien et aux standards de la
-              Banque mondiale (NES 5) et des normes Sphère.
+              Aider ne suffit pas : il faut savoir qui est pauvre, de quoi il manque, si l&apos;aide arrive aux bonnes personnes et
+              si leur situation s&apos;améliore. LanfiaSave le calcule en direct, avec un cadre de 19 indicateurs de suivi.
             </p>
           </div>
+          <dl className="grid grid-cols-3 gap-4">
+            {[
+              ["5", "dimensions de la pauvreté"],
+              ["19", "indicateurs de suivi"],
+              ["8", "alertes de besoins non couverts"],
+            ].map(([v, l]) => (
+              <div key={l} className="rounded-card border border-line p-4">
+                <dt className="text-2xl font-bold text-navy-900">{v}</dt>
+                <dd className="mt-1 text-xs text-muted">{l}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {INSPIRATIONS.map(([c, t]) => (
-            <div key={c} className="flex items-center gap-4 rounded-card border border-line p-5">
-              <span className="grid size-11 shrink-0 place-items-center rounded-full bg-gold-100 text-gold-600"><Globe2 className="size-5" /></span>
-              <div>
-                <p className="font-semibold text-ink">{c}</p>
-                <p className="text-sm text-muted">{t}</p>
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+          {POVERTY_PILLARS.map((p) => (
+            <div key={p.title} className="overflow-hidden rounded-card border border-line bg-white">
+              <Photo id={p.photo} className="h-52" />
+              <div className="p-5">
+                <h3 className="font-semibold text-ink">{p.title}</h3>
+                <p className="mt-1 text-sm text-muted">{p.text}</p>
               </div>
             </div>
           ))}
@@ -356,7 +365,7 @@ export default function Home() {
       <footer className="border-t border-line">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-6 text-sm text-muted">
           <span>© 2026 LanfiaTech — LanfiaSave</span>
-          <span>Aucune donnée individuelle n&apos;est publiée sur ce site. Illustrations non représentatives de personnes réelles.</span>
+          <span>Aucune donnée individuelle n&apos;est publiée sur ce site. Photos : Wikimedia Commons (licences libres, auteur indiqué sur chaque photo) ; les personnes photographiées ne sont pas des bénéficiaires.</span>
         </div>
       </footer>
     </div>

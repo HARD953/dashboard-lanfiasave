@@ -18,6 +18,8 @@ import {
   Scale,
   Settings,
   Siren,
+  Target,
+  TrendingDown,
   Users,
   X,
 } from "lucide-react";
@@ -36,6 +38,8 @@ const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
     title: "Pilotage",
     items: [
       { href: "/tableau-de-bord", label: "Tableau de bord", icon: LayoutDashboard, visible: (s) => s.can("report.aggregate") },
+      { href: "/pauvrete", label: "Lutte contre la pauvreté", icon: TrendingDown, visible: (s) => s.can("report.aggregate") },
+      { href: "/indicateurs", label: "Cadre de suivi", icon: Target, visible: (s) => s.can("report.aggregate") },
       { href: "/territoires", label: "Carte des vulnérabilités", icon: MapPinned, visible: (s) => s.can("report.aggregate") },
     ],
   },
