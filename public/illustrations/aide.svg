@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 400" role="img" aria-labelledby="t">
+  <title id="t">Remise d'un kit d'aide à une famille sur un site d'accueil, avec reçu signé</title>
+  <defs><clipPath id="f"><rect width="520" height="400" rx="32"/></clipPath></defs>
+  <g clip-path="url(#f)">
+    <rect width="520" height="400" fill="#ECFAF9"/>
+    <!-- tentes du site d'accueil -->
+    <path d="M24 250 L96 160 L168 250Z" fill="#13A8A8" opacity=".35"/>
+    <path d="M96 160 L96 250" stroke="#0B7F80" stroke-width="3" opacity=".5"/>
+    <path d="M360 250 L430 170 L500 250Z" fill="#13A8A8" opacity=".35"/>
+    <path d="M430 170 L430 250" stroke="#0B7F80" stroke-width="3" opacity=".5"/>
+    <rect y="250" width="520" height="150" fill="#E9D3AE"/>
+    <ellipse cx="170" cy="366" rx="70" ry="10" fill="#0B1F3A" opacity=".12"/>
+    <ellipse cx="350" cy="366" rx="70" ry="10" fill="#0B1F3A" opacity=".12"/>
+    <!-- agent -->
+    <g>
+      <rect x="148" y="290" width="16" height="72" rx="7" fill="#0B1F3A"/>
+      <rect x="170" y="290" width="16" height="72" rx="7" fill="#12305A"/>
+      <path d="M138 232 C138 214 150 204 167 204 C184 204 196 214 196 232 V298 H138Z" fill="#0B1F3A"/>
+      <rect x="146" y="236" width="42" height="8" rx="2" fill="#C9A227" opacity=".9"/>
+      <rect x="159" y="188" width="16" height="18" rx="6" fill="#5E3A20"/>
+      <circle cx="167" cy="172" r="21" fill="#6B4226"/>
+      <path d="M146 166 C148 150 160 144 170 144 C182 144 190 152 188 164 C180 156 160 156 146 166Z" fill="#111"/>
+      <circle cx="160" cy="174" r="2" fill="#111"/>
+      <circle cx="174" cy="174" r="2" fill="#111"/>
+      <path d="M161 183 C165 187 170 187 174 183" stroke="#2E1A0C" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M192 236 C214 244 228 252 240 262" stroke="#0B1F3A" stroke-width="13" stroke-linecap="round" fill="none"/>
+    </g>
+    <!-- kit -->
+    <g transform="translate(232 232)">
+      <rect width="64" height="50" rx="6" fill="#C9A227"/>
+      <rect y="0" width="64" height="12" rx="6" fill="#A8841C"/>
+      <rect x="26" width="12" height="50" fill="#FFFFFF" opacity=".7"/>
+      <path d="M22 30 h20" stroke="#0B1F3A" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+    </g>
+    <!-- bénéficiaire -->
+    <g>
+      <rect x="334" y="292" width="16" height="70" rx="7" fill="#12305A"/>
+      <rect x="356" y="292" width="16" height="70" rx="7" fill="#0B1F3A"/>
+      <path d="M324 234 C324 216 336 206 353 206 C370 206 382 216 382 234 V300 H324Z" fill="#B85C2C"/>
+      <path d="M330 252 H376 M328 272 H378" stroke="#C9A227" stroke-width="5"/>
+      <rect x="345" y="190" width="16" height="18" rx="6" fill="#5E3A20"/>
+      <circle cx="353" cy="174" r="21" fill="#7A4A2A"/>
+      <path d="M332 172 C330 150 344 142 356 142 C370 142 378 152 376 172 C370 160 340 160 332 172Z" fill="#0B7F80"/>
+      <circle cx="346" cy="176" r="2" fill="#111"/>
+      <circle cx="360" cy="176" r="2" fill="#111"/>
+      <path d="M346 185 C350 189 356 189 360 185" stroke="#2E1A0C" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M328 238 C310 246 300 252 292 262" stroke="#B85C2C" stroke-width="13" stroke-linecap="round" fill="none"/>
+    </g>
+  </g>
+  <!-- reçu / preuve -->
+  <g transform="translate(36 34)">
+    <rect width="176" height="92" rx="14" fill="#FFFFFF"/>
+    <rect x="16" y="16" width="34" height="34" rx="9" fill="#E7F5EC"/>
+    <path d="M25 33 l6 6 l11 -12" stroke="#15803D" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="60" y="19" width="96" height="8" rx="4" fill="#0B1F3A"/>
+    <rect x="60" y="34" width="70" height="7" rx="3.5" fill="#94A3B8"/>
+    <rect x="16" y="64" width="144" height="12" rx="6" fill="#F7EFD3"/>
+    <rect x="22" y="67" width="60" height="6" rx="3" fill="#A8841C"/>
+  </g>
+</svg>

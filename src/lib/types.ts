@@ -188,6 +188,14 @@ export type Catalogs = {
   case_needs: Option[];
   occupancy: Option[];
   partner_kinds: Option[];
+  grievance_categories: Option[];
+  grievance_channels: Option[];
+  grievance_priorities: Option[];
+  grievance_statuses: Option[];
+  referral_services: Option[];
+  referral_statuses: Option[];
+  visit_kinds: Option[];
+  visit_trends: Option[];
 };
 
 export type Partner = {
@@ -356,4 +364,100 @@ export type AdminOrganization = {
   status: string;
   members_count: number;
   created_at: string;
+};
+
+export type Grievance = {
+  id: string;
+  organization: string;
+  reference: string;
+  person: string | null;
+  person_name: string | null;
+  person_code: string | null;
+  operation: string | null;
+  operation_title: string | null;
+  territory: string | null;
+  territory_name: string | null;
+  anonymous: boolean;
+  complainant_name: string;
+  complainant_phone: string;
+  channel: string;
+  channel_label: string;
+  category: string;
+  category_label: string;
+  priority: "urgent" | "high" | "normal";
+  priority_label: string;
+  subject: string;
+  description: string;
+  status: string;
+  status_label: string;
+  due_date: string;
+  assigned_to: string | null;
+  assigned_to_name: string | null;
+  escalated_to: string;
+  resolution: string;
+  resolved_at: string | null;
+  satisfaction: string;
+  is_overdue: boolean;
+  is_confidential: boolean;
+  allowed_transitions: Option[];
+  created_at: string;
+};
+
+export type Referral = {
+  id: string;
+  organization: string;
+  reference: string;
+  person: string;
+  person_name: string;
+  person_code: string;
+  operation_case: string | null;
+  service: string;
+  service_label: string;
+  partner: string | null;
+  partner_name: string | null;
+  service_name: string;
+  reason: string;
+  urgent: boolean;
+  status: string;
+  status_label: string;
+  appointment_date: string | null;
+  feedback: string;
+  closed_at: string | null;
+  referred_by_name: string | null;
+  allowed_transitions: Option[];
+  created_at: string;
+};
+
+export type Visit = {
+  id: string;
+  person: string;
+  person_name: string;
+  person_code: string;
+  operation_case: string | null;
+  kind: string;
+  kind_label: string;
+  visited_at: string;
+  person_present: boolean;
+  trend: "improved" | "stable" | "worsened" | "critical";
+  trend_label: string;
+  summary: string;
+  next_visit_date: string | null;
+  visited_by_name: string | null;
+  overdue?: boolean;
+  created_at: string;
+};
+
+export type TerritoryRow = {
+  territory: string | null;
+  name: string;
+  level: string | null;
+  households: number;
+  persons: number | null;
+  vulnerable_persons: number | null;
+  vulnerability_rate: number | null;
+  aids_delivered: number;
+  aid_amount: number;
+  open_cases: number;
+  open_grievances: number;
+  suppressed: boolean;
 };

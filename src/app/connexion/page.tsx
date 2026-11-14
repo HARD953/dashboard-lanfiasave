@@ -1,6 +1,7 @@
 "use client";
 
 import { Lock } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 import { Logo } from "@/components/brand";
 import { Alert, Button, Field, Input } from "@/components/ui";
@@ -44,6 +45,14 @@ export default function LoginPage() {
       <div className="relative hidden overflow-hidden bg-navy-900 p-12 lg:flex lg:flex-col lg:justify-between">
         <div className="absolute -bottom-32 -left-20 size-[28rem] rounded-full bg-teal-600/25 blur-3xl" aria-hidden />
         <Logo light />
+        <Image
+          src="/illustrations/terrain.svg"
+          alt=""
+          width={560}
+          height={460}
+          priority
+          className="relative mx-auto h-auto w-full max-w-md drop-shadow-2xl"
+        />
         <div className="relative">
           <p className="text-3xl font-bold leading-snug text-white">
             Identifier avec équité.

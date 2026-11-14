@@ -22,5 +22,11 @@ export const config = {
     "/operations/:path*",
     "/aides/:path*",
     "/administration/:path*",
+    "/plaintes/:path*",
+    "/orientations/:path*",
+    "/visites/:path*",
+    "/territoires/:path*",
+    "/partenaires/:path*",
+    "/methodes/:path*",
   ],
 };

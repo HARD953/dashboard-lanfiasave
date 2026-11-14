@@ -2,12 +2,18 @@
 
 import clsx from "clsx";
 import {
+  BookOpen,
+  Building2,
+  CalendarCheck,
   ClipboardCheck,
   FolderKanban,
   HandHeart,
   LayoutDashboard,
   LogOut,
+  MapPinned,
   Menu,
+  MessageSquareWarning,
+  Route,
   ScrollText,
   Scale,
   Settings,
@@ -24,45 +30,87 @@ import { Logo } from "./brand";
 import { Select } from "./ui";
 
 type Visible = (s: { can: (p: string) => boolean; isPlatformAdmin: boolean }) => boolean;
-const NAV: { href: string; label: string; icon: typeof Users; visible: Visible }[] = [
-  { href: "/tableau-de-bord", label: "Tableau de bord", icon: LayoutDashboard, visible: (s) => s.can("report.aggregate") },
-  { href: "/beneficiaires", label: "Bénéficiaires", icon: Users, visible: (s) => s.can("person.view") },
-  { href: "/operations", label: "Opérations & sinistres", icon: Siren, visible: (s) => s.can("operation.view") },
-  { href: "/aides", label: "Aides apportées", icon: HandHeart, visible: (s) => s.can("assistance.view") },
-  { href: "/programmes", label: "Programmes", icon: FolderKanban, visible: (s) => s.can("program.view") },
-  { href: "/instruction", label: "Instruction & comité", icon: ClipboardCheck, visible: (s) => s.can("application.view") },
-  { href: "/recours", label: "Recours", icon: Scale, visible: (s) => s.can("application.view") },
-  { href: "/audit", label: "Journal d'audit", icon: ScrollText, visible: (s) => s.can("audit.view") },
+type NavItem = { href: string; label: string; icon: typeof Users; visible: Visible };
+const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
   {
-    href: "/administration",
-    label: "Administration",
-    icon: Settings,
-    visible: (s) => s.isPlatformAdmin || s.can("user.manage") || s.can("partner.manage"),
+    title: "Pilotage",
+    items: [
+      { href: "/tableau-de-bord", label: "Tableau de bord", icon: LayoutDashboard, visible: (s) => s.can("report.aggregate") },
+      { href: "/territoires", label: "Carte des vulnérabilités", icon: MapPinned, visible: (s) => s.can("report.aggregate") },
+    ],
+  },
+  {
+    title: "Accompagnement",
+    items: [
+      { href: "/beneficiaires", label: "Bénéficiaires", icon: Users, visible: (s) => s.can("person.view") },
+      { href: "/operations", label: "Opérations & sinistres", icon: Siren, visible: (s) => s.can("operation.view") },
+      { href: "/visites", label: "Visites & agenda", icon: CalendarCheck, visible: (s) => s.can("visit.view") },
+      { href: "/orientations", label: "Orientations", icon: Route, visible: (s) => s.can("referral.view") },
+      { href: "/aides", label: "Aides apportées", icon: HandHeart, visible: (s) => s.can("assistance.view") },
+    ],
+  },
+  {
+    title: "Programmes",
+    items: [
+      { href: "/programmes", label: "Programmes", icon: FolderKanban, visible: (s) => s.can("program.view") },
+      { href: "/instruction", label: "Instruction & comité", icon: ClipboardCheck, visible: (s) => s.can("application.view") },
+      { href: "/partenaires", label: "Partenaires", icon: Building2, visible: (s) => s.can("partner.view") },
+    ],
+  },
+  {
+    title: "Redevabilité",
+    items: [
+      { href: "/plaintes", label: "Plaintes & réclamations", icon: MessageSquareWarning, visible: (s) => s.can("grievance.view") },
+      { href: "/recours", label: "Recours", icon: Scale, visible: (s) => s.can("application.view") },
+      { href: "/audit", label: "Journal d'audit", icon: ScrollText, visible: (s) => s.can("audit.view") },
+    ],
+  },
+  {
+    title: "Système",
+    items: [
+      {
+        href: "/administration",
+        label: "Administration",
+        icon: Settings,
+        visible: (s) => s.isPlatformAdmin || s.can("user.manage") || s.can("partner.manage"),
+      },
+      { href: "/methodes", label: "Méthodes & références", icon: BookOpen, visible: () => true },
+    ],
   },
 ];
+const NAV = NAV_GROUPS.flatMap((g) => g.items);
 
 function NavLinks({ onNavigate }: { onNavigate: () => void }) {
   const session = useSession();
   const pathname = usePathname();
   return (
     <>
-      {NAV.filter((n) => n.visible(session)).map((item) => {
-        const active = pathname.startsWith(item.href);
+      {NAV_GROUPS.map((group) => {
+        const items = group.items.filter((n) => n.visible(session));
+        if (!items.length) return null;
         return (
-          <Link
-            key={item.href}
-            href={item.href}
-            onClick={onNavigate}
-            className={clsx(
-              "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition",
-              active ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5 hover:text-white",
-            )}
-            aria-current={active ? "page" : undefined}
-          >
-            <item.icon className={clsx("size-[18px]", active ? "text-teal-500" : "")} />
-            {item.label}
-            {active && <span className="ml-auto h-5 w-1 rounded-full bg-gold-500" />}
-          </Link>
+          <div key={group.title} className="pb-2">
+            <p className="px-3 pb-1 pt-3 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-white/40">{group.title}</p>
+            {items.map((item) => {
+              const active = pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={onNavigate}
+                  className={clsx(
+                    "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition",
+                    active ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5 hover:text-white",
+                  )}
+                  aria-current={active ? "page" : undefined}
+                >
+                  <item.icon className={clsx("size-[18px]", active ? "text-teal-500" : "")} />
+                  {item.label}
+                  {active && <span className="ml-auto h-5 w-1 rounded-full bg-gold-500" />}
+                </Link>
+              );
+            })}
+          </div>
         );
       })}
     </>
@@ -74,7 +122,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const { me, loading, organizations, organizationId, setOrganizationId, membershipsInOrg, logout } = session;
   const [open, setOpen] = useState(false);
 
-  const hasAccess = NAV.some((n) => n.visible(session));
+  const hasAccess = NAV.some((n) => n.href !== "/methodes" && n.visible(session));
   const roles = session.isPlatformAdmin
     ? "Administrateur de la plateforme"
     : membershipsInOrg.map((m) => m.role_label).join(" · ");
@@ -103,7 +151,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Select>
         </div>
       )}
-      <nav className="mt-2 flex-1 space-y-0.5 px-3">
+      <nav className="mt-1 flex-1 overflow-y-auto px-3">
         <Suspense fallback={null}>
           <NavLinks onNavigate={() => setOpen(false)} />
         </Suspense>

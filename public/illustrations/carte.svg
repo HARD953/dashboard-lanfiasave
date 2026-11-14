@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 400" role="img" aria-labelledby="t">
+  <title id="t">Carte stylisée des localités avec les zones prioritaires mises en évidence</title>
+  <defs>
+    <clipPath id="f"><rect width="520" height="400" rx="32"/></clipPath>
+    <pattern id="grid" width="26" height="26" patternUnits="userSpaceOnUse">
+      <path d="M26 0 H0 V26" fill="none" stroke="#FFFFFF" stroke-opacity=".06"/>
+    </pattern>
+  </defs>
+  <g clip-path="url(#f)">
+    <rect width="520" height="400" fill="#0B1F3A"/>
+    <rect width="520" height="400" fill="url(#grid)"/>
+    <!-- territoire stylisé découpé en zones -->
+    <g stroke="#0B1F3A" stroke-width="4" stroke-linejoin="round">
+      <path d="M120 70 L230 52 L262 128 L196 170 L118 150Z" fill="#13A8A8" opacity=".55"/>
+      <path d="M230 52 L338 64 L360 140 L262 128Z" fill="#13A8A8" opacity=".3"/>
+      <path d="M338 64 L420 96 L430 176 L360 140Z" fill="#C9A227" opacity=".75"/>
+      <path d="M118 150 L196 170 L188 260 L104 240Z" fill="#C9A227" opacity=".55"/>
+      <path d="M196 170 L262 128 L360 140 L340 236 L268 262 L188 260Z" fill="#B42318" opacity=".85"/>
+      <path d="M360 140 L430 176 L424 270 L340 236Z" fill="#B26A00" opacity=".85"/>
+      <path d="M104 240 L188 260 L196 336 L120 330Z" fill="#13A8A8" opacity=".35"/>
+      <path d="M188 260 L268 262 L292 344 L196 336Z" fill="#B26A00" opacity=".7"/>
+      <path d="M268 262 L340 236 L424 270 L396 340 L292 344Z" fill="#13A8A8" opacity=".55"/>
+    </g>
+    <!-- marqueurs -->
+    <g>
+      <path d="M276 166 c-14 0 -24 10 -24 23 c0 18 24 38 24 38 s24 -20 24 -38 c0 -13 -10 -23 -24 -23Z" fill="#FFFFFF"/>
+      <circle cx="276" cy="189" r="9" fill="#B42318"/>
+      <path d="M384 176 c-10 0 -18 8 -18 17 c0 13 18 28 18 28 s18 -15 18 -28 c0 -9 -8 -17 -18 -17Z" fill="#FFFFFF"/>
+      <circle cx="384" cy="193" r="7" fill="#B26A00"/>
+      <path d="M150 186 c-9 0 -16 7 -16 15 c0 12 16 25 16 25 s16 -13 16 -25 c0 -8 -7 -15 -16 -15Z" fill="#FFFFFF"/>
+      <circle cx="150" cy="201" r="6" fill="#C9A227"/>
+    </g>
+  </g>
+  <!-- légende -->
+  <g transform="translate(330 300)">
+    <rect width="168" height="80" rx="14" fill="#FFFFFF"/>
+    <circle cx="20" cy="22" r="6" fill="#B42318"/><rect x="34" y="18" width="90" height="8" rx="4" fill="#0B1F3A"/>
+    <circle cx="20" cy="42" r="6" fill="#B26A00"/><rect x="34" y="38" width="70" height="8" rx="4" fill="#5B6B7F"/>
+    <circle cx="20" cy="62" r="6" fill="#13A8A8"/><rect x="34" y="58" width="56" height="8" rx="4" fill="#94A3B8"/>
+  </g>
+</svg>

@@ -21,6 +21,7 @@ import {
 import { ApiError, api, useApi, type Paginated } from "@/lib/api";
 import { BANDS, SEX, STATUS_TONE, formatDate } from "@/lib/format";
 import { useSession } from "@/lib/session";
+import { FollowupPanel } from "@/components/followup";
 import { AidPanel, OperationCasesPanel, VulnerabilityPanel } from "@/components/person-panels";
 import type { Application, Person, Program, Questionnaire, ScoreResult, SurveyResponse } from "@/lib/types";
 
@@ -168,6 +169,7 @@ export default function PersonDetailPage({ id }: { id: string }) {
 
           <VulnerabilityPanel personId={person.id} />
           <AidPanel personId={person.id} personName={person.display_name} />
+          <FollowupPanel person={person} />
           <Card>
             <CardHeader
               title="Évaluation de vulnérabilité"
