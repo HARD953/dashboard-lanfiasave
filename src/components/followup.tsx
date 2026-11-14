@@ -219,6 +219,9 @@ export function GrievanceDrawer({ grievance, onClose, onChanged }: { grievance: 
           { label: "Localité", value: g.territory_name },
           ...(g.escalated_to ? [{ label: "Escaladée vers", value: g.escalated_to }] : []),
           ...(g.resolution ? [{ label: "Réponse apportée", value: g.resolution }] : []),
+          ...(g.satisfaction
+            ? [{ label: "Avis de la personne", value: { satisfied: "Satisfaite", partly: "Partiellement satisfaite", unsatisfied: "Non satisfaite" }[g.satisfaction] ?? g.satisfaction }]
+            : []),
         ]}
       />
       {error && <Alert tone="danger">{error}</Alert>}
