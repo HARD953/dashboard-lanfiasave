@@ -2,6 +2,9 @@
 
 import { AlertTriangle, ArrowRight, ClipboardCheck, FolderKanban, HandHeart, Scale, Siren, Users } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { homeFor } from "@/components/app-shell";
 import { PhotoBanner } from "@/components/photo";
 import { GapList, pct, type PovertyReport } from "@/components/poverty";
 import { Alert, Badge, Card, CardHeader, Spinner, Stat } from "@/components/ui";
@@ -42,9 +45,16 @@ function Bar({ label, value, total, tone }: { label: string; value: number; tota
 }
 
 export default function DashboardPage() {
-  const { me, organizationId } = useSession();
-  const { data, isLoading, error } = useApi<Overview>(organizationId ? `reports/overview/?organization=${organizationId}` : null);
-  const { data: poverty } = useApi<PovertyReport>(organizationId ? `reports/poverty/?organization=${organizationId}` : null);
+  const { me, organizationId, can, isPlatformAdmin } = useSession();
+  const router = useRouter();
+  const allowed = can("report.aggregate");
+  // Ministère, payeur, relais, exploitant : leur page d'accueil est celle de leur rôle.
+  useEffect(() => {
+    if (me && organizationId && !allowed) router.replace(homeFor(can, isPlatformAdmin));
+  }, [me, organizationId, allowed, can, isPlatformAdmin, router]);
+  const { data, isLoading, error } = useApi<Overview>(allowed && organizationId ? `reports/overview/?organization=${organizationId}` : null);
+  const { data: poverty } = useApi<PovertyReport>(allowed && organizationId ? `reports/poverty/?organization=${organizationId}` : null);
+  if (!allowed) return <Spinner />;
 
   if (isLoading || !organizationId) return <Spinner />;
   if (error || !data) return <Alert tone="danger">{error?.message ?? "Indicateurs indisponibles."}</Alert>;

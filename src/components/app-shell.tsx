@@ -3,6 +3,12 @@
 import clsx from "clsx";
 import {
   BookOpen,
+  Dices,
+  FileStack,
+  Gauge,
+  ListChecks,
+  ShieldAlert,
+  Wallet,
   Building2,
   CalendarCheck,
   ClipboardCheck,
@@ -32,6 +38,11 @@ import { Logo } from "./brand";
 import { Select } from "./ui";
 
 type Visible = (s: { can: (p: string) => boolean; isPlatformAdmin: boolean }) => boolean;
+/** Première page accessible : un ministère ou un payeur n'a pas accès au tableau de bord général. */
+export function homeFor(can: (p: string) => boolean, isPlatformAdmin = false) {
+  for (const g of NAV_GROUPS) for (const i of g.items) if (i.visible({ can, isPlatformAdmin })) return i.href;
+  return "/tableau-de-bord";
+}
 type NavItem = { href: string; label: string; icon: typeof Users; visible: Visible };
 const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
   {
@@ -41,6 +52,22 @@ const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
       { href: "/pauvrete", label: "Lutte contre la pauvreté", icon: TrendingDown, visible: (s) => s.can("report.aggregate") },
       { href: "/indicateurs", label: "Cadre de suivi", icon: Target, visible: (s) => s.can("report.aggregate") },
       { href: "/territoires", label: "Carte des vulnérabilités", icon: MapPinned, visible: (s) => s.can("report.aggregate") },
+    ],
+  },
+  {
+    title: "Mines, pétrole, énergie",
+    items: [
+      { href: "/ministere", label: "Tableau du dispositif", icon: Gauge, visible: (s) => s.can("report.ministry") },
+      {
+        href: "/demandes",
+        label: "Demandes des ménages",
+        icon: FileStack,
+        visible: (s) => s.can("claim.view") || s.can("claim.view_own") || s.can("claim.create") || s.can("claim.operator") || s.can("claim.evaluate"),
+      },
+      { href: "/paiements", label: "Paiements", icon: Wallet, visible: (s) => s.can("claim.pay") },
+      { href: "/liste-exploitant", label: "Liste de l'exploitant", icon: ListChecks, visible: (s) => s.can("claim.import_list") },
+      { href: "/plaintes-confidentielles", label: "Plaintes confidentielles", icon: ShieldAlert, visible: (s) => s.can("protected.view") || s.can("protected.file") },
+      { href: "/evaluation", label: "Évaluation indépendante", icon: Dices, visible: (s) => s.can("claim.evaluate") },
     ],
   },
   {
