@@ -61,9 +61,8 @@ export default function PovertyPage() {
 
   return (
     <>
-      <PhotoBanner id="karite" eyebrow="Lutte contre la pauvreté" title="Qui est pauvre, de quoi manque-t-il, et qui en sort ?">
-        Un indice à cinq dimensions calculé pour chaque ménage recensé, les besoins restés sans réponse, et le suivi des
-        ménages dans le temps.
+      <PhotoBanner id="karite" eyebrow="Pilotage" title="Lutte contre la pauvreté">
+        Qui est pauvre, de quoi il manque, et qui en sort.
       </PhotoBanner>
 
       {s.assessed === 0 ? (

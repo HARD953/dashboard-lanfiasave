@@ -2,6 +2,7 @@
 
 import clsx from "clsx";
 import {
+  BarChart3,
   BookOpen,
   Dices,
   FileStack,
@@ -49,6 +50,7 @@ const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
     title: "Pilotage",
     items: [
       { href: "/tableau-de-bord", label: "Tableau de bord", icon: LayoutDashboard, visible: (s) => s.can("report.aggregate") },
+      { href: "/analytique", label: "Analytique", icon: BarChart3, visible: (s) => s.can("report.aggregate") },
       { href: "/pauvrete", label: "Lutte contre la pauvreté", icon: TrendingDown, visible: (s) => s.can("report.aggregate") },
       { href: "/indicateurs", label: "Cadre de suivi", icon: Target, visible: (s) => s.can("report.aggregate") },
       { href: "/territoires", label: "Carte des vulnérabilités", icon: MapPinned, visible: (s) => s.can("report.aggregate") },
@@ -120,8 +122,8 @@ function NavLinks({ onNavigate }: { onNavigate: () => void }) {
         const items = group.items.filter((n) => n.visible(session));
         if (!items.length) return null;
         return (
-          <div key={group.title} className="pb-2">
-            <p className="px-3 pb-1 pt-3 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-white/40">{group.title}</p>
+          <div key={group.title} className="pb-1">
+            <p className="px-2 pb-1 pt-3 text-[10px] font-bold uppercase tracking-[0.12em] text-navy-700">{group.title}</p>
             {items.map((item) => {
               const active = pathname.startsWith(item.href);
               return (
@@ -130,14 +132,15 @@ function NavLinks({ onNavigate }: { onNavigate: () => void }) {
                   href={item.href}
                   onClick={onNavigate}
                   className={clsx(
-                    "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition",
-                    active ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5 hover:text-white",
+                    "group relative flex items-center gap-2.5 rounded-[10px] px-2.5 py-[7px] text-[13px] font-medium transition",
+                    active
+                      ? "bg-navy-700 text-white shadow-[0_2px_8px_rgba(26,143,209,0.25)]"
+                      : "text-[#2a4a62] hover:bg-navy-50 hover:text-navy-800",
                   )}
                   aria-current={active ? "page" : undefined}
                 >
-                  <item.icon className={clsx("size-[18px]", active ? "text-teal-500" : "")} />
-                  {item.label}
-                  {active && <span className="ml-auto h-5 w-1 rounded-full bg-gold-500" />}
+                  <item.icon className={clsx("size-[16px] shrink-0", active ? "text-white" : "text-[#5a8aaa] group-hover:text-navy-700")} />
+                  <span className="truncate">{item.label}</span>
                 </Link>
               );
             })}
@@ -146,6 +149,15 @@ function NavLinks({ onNavigate }: { onNavigate: () => void }) {
       })}
     </>
   );
+}
+
+function initials(name?: string | null) {
+  return (name ?? "")
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase())
+    .join("") || "·";
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -159,21 +171,18 @@ export function AppShell({ children }: { children: ReactNode }) {
     : membershipsInOrg.map((m) => m.role_label).join(" · ");
 
   const sidebar = (
-    <div className="flex h-full flex-col bg-navy-900 text-white">
-      <div className="flex h-16 items-center justify-between px-5">
-        <Logo light />
-        <button className="lg:hidden" onClick={() => setOpen(false)} aria-label="Fermer le menu">
+    <div className="flex h-full flex-col border-r border-line bg-white">
+      <div className="stripe h-1 shrink-0" />
+      <div className="flex h-16 items-center justify-between border-b border-line px-4">
+        <Logo />
+        <button className="text-muted lg:hidden" onClick={() => setOpen(false)} aria-label="Fermer le menu">
           <X className="size-5" />
         </button>
       </div>
       {organizations.length > 1 && (
-        <div className="px-4 pb-2">
-          <label className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-white/50">Organisation</label>
-          <Select
-            value={organizationId ?? ""}
-            onChange={(e) => setOrganizationId(e.target.value)}
-            className="border-white/15 bg-navy-800 text-white"
-          >
+        <div className="border-b border-line px-3 py-2.5">
+          <label className="mb-1 block text-[10px] font-bold uppercase tracking-[0.12em] text-muted">Organisation</label>
+          <Select value={organizationId ?? ""} onChange={(e) => setOrganizationId(e.target.value)} className="h-9 text-[13px]">
             {organizations.map((o) => (
               <option key={o.id} value={o.id}>
                 {o.name}
@@ -182,29 +191,38 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Select>
         </div>
       )}
-      <nav className="mt-1 flex-1 overflow-y-auto px-3">
+      <nav className="flex-1 overflow-y-auto px-2 pb-2 [scrollbar-width:thin]">
         <Suspense fallback={null}>
           <NavLinks onNavigate={() => setOpen(false)} />
         </Suspense>
       </nav>
-      <div className="border-t border-white/10 p-4">
-        <p className="truncate text-sm font-semibold">{me?.full_name ?? "…"}</p>
-        <p className="truncate text-xs text-white/60">{roles || "—"}</p>
-        <button
-          onClick={logout}
-          className="mt-3 flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-white/70 hover:bg-white/5 hover:text-white"
-        >
-          <LogOut className="size-4" /> Se déconnecter
-        </button>
+      <div className="border-t border-line p-2.5">
+        <div className="flex items-center gap-2 rounded-[10px] bg-navy-50 p-2">
+          <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-navy-700 to-navy-800 text-[11px] font-bold text-white">
+            {initials(me?.full_name)}
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-xs font-semibold text-ink">{me?.full_name ?? "…"}</p>
+            <p className="truncate text-[11px] font-medium text-navy-700" title={roles}>{roles || "—"}</p>
+          </div>
+          <button
+            onClick={logout}
+            title="Se déconnecter"
+            aria-label="Se déconnecter"
+            className="rounded-lg p-1.5 text-[#5a8aaa] hover:bg-navy-700/10 hover:text-navy-800"
+          >
+            <LogOut className="size-3.5" />
+          </button>
+        </div>
       </div>
     </div>
   );
 
   return (
-    <div className="min-h-screen lg:grid lg:grid-cols-[260px_1fr]">
+    <div className="min-h-screen lg:grid lg:grid-cols-[248px_1fr]">
       <aside className="sticky top-0 hidden h-screen lg:block">{sidebar}</aside>
       {open && (
-        <div className="fixed inset-0 z-40 bg-navy-950/50 lg:hidden" onClick={() => setOpen(false)}>
+        <div className="fixed inset-0 z-40 bg-[#0a1e2e]/45 lg:hidden" onClick={() => setOpen(false)}>
           <aside className="h-full w-72" onClick={(e) => e.stopPropagation()}>
             {sidebar}
           </aside>
@@ -217,7 +235,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </button>
           <Logo />
         </header>
-        <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+        <main className="mx-auto max-w-[1360px] px-4 py-5 sm:px-6 lg:px-7 lg:py-6">
           {me?.must_change_password ? (
             <ChangePasswordGate />
           ) : !loading && me && !hasAccess ? (

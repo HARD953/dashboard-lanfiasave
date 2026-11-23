@@ -1,37 +1,40 @@
 @import "tailwindcss";
 
 /*
- * Charte LanfiaSave (cahier §15.2) : bleu nuit, turquoise, blanc et or discret.
+ * Charte LanfiaSave, alignée sur LanfiaLink : bleus, surfaces claires, cartes arrondies.
  * Le rouge est réservé aux alertes importantes.
  */
 @theme {
-  --color-navy-950: #061226;
-  --color-navy-900: #0b1f3a;
-  --color-navy-800: #12305a;
-  --color-navy-700: #1b4378;
-  --color-navy-100: #e6edf7;
-  --color-navy-50: #f3f6fb;
-  --color-teal-700: #0b7f80;
-  --color-teal-600: #0e9595;
-  --color-teal-500: #13a8a8;
-  --color-teal-100: #d8f3f2;
-  --color-teal-50: #ecfaf9;
-  --color-gold-600: #a8841c;
-  --color-gold-500: #c9a227;
-  --color-gold-100: #f7efd3;
-  --color-ink: #0f1e33;
-  --color-muted: #5b6b7f;
-  --color-soft: #94a3b8;
-  --color-line: #dce3eb;
-  --color-canvas: #f4f6f9;
-  --color-danger: #b42318;
-  --color-danger-50: #fdecea;
-  --color-success: #15803d;
-  --color-success-50: #e7f5ec;
+  /* Palette LanfiaLink : bleu ciel, bleu profond, surfaces bleutées, coins arrondis. */
+  --color-navy-950: #072b44;
+  --color-navy-900: #0d4e7a;
+  --color-navy-800: #0d6fab;
+  --color-navy-700: #1a8fd1;
+  --color-navy-100: #d6eaf6;
+  --color-navy-50: #edf5fa;
+  --color-teal-700: #0d6fab;
+  --color-teal-600: #1a8fd1;
+  --color-teal-500: #4fb3e8;
+  --color-teal-200: #b9dcf1;
+  --color-teal-100: #d6eaf6;
+  --color-teal-50: #edf5fa;
+  --color-gold-600: #7a4f00;
+  --color-gold-500: #d08a00;
+  --color-gold-100: #fbefd6;
+  --color-ink: #0a1e2e;
+  --color-muted: #5a7a92;
+  --color-soft: #8fa8bc;
+  --color-line: #d4e4f0;
+  --color-canvas: #f0f5f9;
+  --color-danger: #b03318;
+  --color-danger-50: #fce4dc;
+  --color-success: #0a9e7a;
+  --color-success-50: #dcf5ec;
   --color-warning: #b26a00;
-  --color-warning-50: #fff4e0;
+  --color-warning-50: #fbefd6;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --radius-card: 14px;
+  --radius-card: 16px;
+  --shadow-card: 0 1px 3px rgba(13, 80, 140, 0.06);
 }
 
 html,
@@ -47,4 +50,19 @@ body {
 
 .tabular {
   font-variant-numeric: tabular-nums;
+}
+
+.stripe {
+  background: linear-gradient(90deg, #0d6fab 0%, #1a8fd1 35%, #4fb3e8 65%, #1a8fd1 85%, #0d6fab 100%);
+}
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+.rise-in {
+  animation: rise-in 0.35s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rise-in { animation: none; }
 }

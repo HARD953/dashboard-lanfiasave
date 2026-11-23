@@ -51,7 +51,7 @@ export function PhotoBanner({
 }) {
   const p = PHOTOS[id];
   return (
-    <section className={clsx("relative mb-6 min-h-48 overflow-hidden rounded-card bg-navy-900", className)}>
+    <section className={clsx("rise-in relative mb-5 min-h-40 overflow-hidden rounded-2xl bg-navy-900", className)}>
       <img
         src={p.src}
         alt={p.alt}
@@ -59,11 +59,12 @@ export function PhotoBanner({
         className="absolute inset-0 size-full object-cover"
         style={{ objectPosition: "position" in p ? p.position : "center" }}
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-navy-950/90 via-navy-900/60 to-navy-900/0" aria-hidden />
-      <div className="relative px-6 py-7 sm:px-8 sm:py-9">
-        {eyebrow && <p className="text-xs font-semibold uppercase tracking-widest text-gold-500">{eyebrow}</p>}
-        <h1 className="mt-1 max-w-2xl text-2xl font-bold tracking-tight text-white sm:text-3xl">{title}</h1>
-        {children && <div className="mt-2 max-w-2xl text-sm text-white/80">{children}</div>}
+      <div className="absolute inset-0 bg-gradient-to-r from-navy-950/95 via-navy-900/75 to-navy-900/0" aria-hidden />
+      <div className="stripe absolute inset-x-0 top-0 h-[3px]" aria-hidden />
+      <div className="relative px-6 py-7 sm:px-7">
+        {eyebrow && <p className="text-xs font-semibold text-[#c8e6f8]/90">{eyebrow}</p>}
+        <h1 className="mt-1 max-w-2xl text-[22px] font-bold tracking-tight text-white">{title}</h1>
+        {children && <div className="mt-1.5 max-w-xl text-[13px] text-[#c8e6f8]/85">{children}</div>}
       </div>
       <PhotoCredit id={id} className="absolute bottom-2 right-2" />
     </section>

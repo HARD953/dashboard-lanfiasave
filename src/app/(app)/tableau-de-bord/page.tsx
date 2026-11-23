@@ -71,8 +71,7 @@ export default function DashboardPage() {
   return (
     <>
       <PhotoBanner id="marche" eyebrow="Tableau de bord" title={`Bonjour ${me?.full_name.split(" ")[0] ?? ""}`}>
-        Où en est la lutte contre la pauvreté dans votre zone, et quels besoins attendent encore une réponse.
-        Indicateurs calculés en direct sur les données de votre organisation.
+        Où en est la lutte contre la pauvreté dans votre zone.
       </PhotoBanner>
 
       {poverty && poverty.summary.assessed > 0 && (
