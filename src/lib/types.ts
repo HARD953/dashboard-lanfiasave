@@ -460,4 +460,6 @@ export type TerritoryRow = {
   open_cases: number;
   open_grievances: number;
   suppressed: boolean;
+  latitude: number | null;
+  longitude: number | null;
 };
