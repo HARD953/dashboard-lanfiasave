@@ -61,7 +61,7 @@ function FileModal({ open, onClose }: { open: boolean; onClose: () => void }) {
         </Alert>
       ) : (
         <>
-          <p className="text-sm text-muted">Canal séparé, hors de la chaîne de l&apos;exploitant. L&apos;identité n&apos;est levée qu&apos;avec l&apos;accord écrit du plaignant. Toute aide liée au retrait d&apos;une plainte est interdite et signalée au préfet.</p>
+          <p className="text-sm text-muted">Canal séparé, hors de la chaîne du promoteur. L&apos;identité n&apos;est levée qu&apos;avec l&apos;accord écrit du plaignant. Toute aide liée au retrait d&apos;une plainte est interdite et signalée au préfet.</p>
           {error && <Alert tone="danger">{error}</Alert>}
           <Field label="Nature"><Select value={f.kind} onChange={set("kind")}>{meta?.protected_kinds.map((k) => <option key={k.value} value={k.value}>{k.label}</option>)}</Select></Field>
           <Field label="Canal"><Select value={f.channel} onChange={set("channel")}>{meta?.channels.map((k) => <option key={k.value} value={k.value}>{k.label}</option>)}</Select></Field>
@@ -119,7 +119,7 @@ export default function ProtectedPage() {
     <>
       <PageHeader
         title="Plaintes confidentielles et représailles"
-        subtitle="Plaintes visant l'exploitant, un sous-traitant, une autorité locale ou un relais, traitées hors de la chaîne de l'exploitant par le membre indépendant de la commission de recours."
+        subtitle="Plaintes visant le promoteur, un sous-traitant, une autorité locale ou un relais, traitées hors de la chaîne du promoteut par le membre indépendant de la commission de recours."
         actions={can("protected.file") && <Button variant="accent" icon={<Plus className="size-4" />} onClick={() => setFiling(true)}>Enregistrer une plainte</Button>}
       />
       {!viewer ? (

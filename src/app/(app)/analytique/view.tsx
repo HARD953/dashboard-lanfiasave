@@ -68,7 +68,7 @@ const COLUMNS: { key: string; label: string; money?: boolean }[] = [
   { key: "persons", label: "Personnes" }, { key: "households", label: "Ménages" },
   { key: "applications", label: "Demandes" }, { key: "approvals", label: "Accordées" },
   { key: "aids", label: "Aides" }, { key: "aid_amount", label: "Montant (FCFA)", money: true },
-  { key: "grievances", label: "Plaintes" }, { key: "claims", label: "Mines, pétrole, énergie" },
+  { key: "grievances", label: "Plaintes" }, { key: "claims", label: "Ménages affectés" },
 ];
 const DIM_COLUMNS: Record<Dim, string[]> = {
   region: COLUMNS.map((c) => c.key), department: COLUMNS.map((c) => c.key), commune: COLUMNS.map((c) => c.key),

@@ -57,7 +57,7 @@ const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
     ],
   },
   {
-    title: "Mines, pétrole, énergie",
+    title: "Projets et ménages affectés",
     items: [
       { href: "/ministere", label: "Tableau du dispositif", icon: Gauge, visible: (s) => s.can("report.ministry") },
       {
@@ -67,7 +67,7 @@ const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
         visible: (s) => s.can("claim.view") || s.can("claim.view_own") || s.can("claim.create") || s.can("claim.operator") || s.can("claim.evaluate"),
       },
       { href: "/paiements", label: "Paiements", icon: Wallet, visible: (s) => s.can("claim.pay") },
-      { href: "/liste-exploitant", label: "Liste de l'exploitant", icon: ListChecks, visible: (s) => s.can("claim.import_list") },
+      { href: "/liste-exploitant", label: "Liste du promoteur", icon: ListChecks, visible: (s) => s.can("claim.import_list") },
       { href: "/plaintes-confidentielles", label: "Plaintes confidentielles", icon: ShieldAlert, visible: (s) => s.can("protected.view") || s.can("protected.file") },
       { href: "/evaluation", label: "Évaluation indépendante", icon: Dices, visible: (s) => s.can("claim.evaluate") },
     ],

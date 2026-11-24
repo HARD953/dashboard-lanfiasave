@@ -39,7 +39,7 @@ export default function ClaimsPage() {
         subtitle={
           operatorView
             ? "Réclamations que la cellule locale vous a transmises. Les coordonnées n'apparaissent qu'avec l'accord du ménage."
-            : "Mines, pétrole, énergie : chaque demande reçoit un numéro de dossier, une décision motivée en 30 jours au plus, et peut être contestée."
+            : "Tout projet qui affecte des ménages : chaque demande reçoit un numéro de dossier, une décision motivée en 30 jours au plus, et peut être contestée."
         }
         actions={can("claim.create") && <Button variant="accent" icon={<Plus className="size-4" />} onClick={() => setCreating(true)}>Nouvelle demande</Button>}
       />

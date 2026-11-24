@@ -183,9 +183,9 @@ export default function ClaimDetail({ id }: { id: string }) {
   if (can("claim.urgent_order") && st !== "closed")
     actions.push({ key: "urgent", label: "Ordonner", title: "Mesure d'urgence (72 h)", path: "urgent/", variant: "danger", fields: [{ name: "reason", label: "Motif", type: "select", required: true, options: opts(meta?.urgency_reasons), initial: c.urgency_reason }, { name: "measure", label: "Mesure ordonnée", type: "textarea", required: true }] });
   if (can("claim.process") && c.operator && !c.transmitted_to_operator_at && !["registered", "closed"].includes(st))
-    actions.push({ key: "transmit", label: "Transmettre", title: `Transmettre à ${c.operator_name}`, path: "transmit/", note: "L'exploitant reçoit l'impact et la réclamation. Il ne reçoit les coordonnées qu'avec l'accord du ménage, et jamais les plaintes confidentielles.", fields: [] });
+    actions.push({ key: "transmit", label: "Transmettre", title: `Transmettre à ${c.operator_name}`, path: "transmit/", note: "Le promoteur reçoit l'impact et la réclamation. Il ne reçoit les coordonnées qu'avec l'accord du ménage, et jamais les plaintes confidentielles.", fields: [] });
   if (can("claim.operator") && c.transmitted_to_operator_at && !c.operator_responded_at)
-    actions.push({ key: "operator", label: "Envoyer la réponse", title: "Réponse de l'exploitant", path: "operator-response/", variant: "accent", fields: [{ name: "response", label: "Réponse motivée", type: "textarea", required: true }] });
+    actions.push({ key: "operator", label: "Envoyer la réponse", title: "Réponse du promoteur", path: "operator-response/", variant: "accent", fields: [{ name: "response", label: "Réponse motivée", type: "textarea", required: true }] });
   if (can("claim.process") && st === "decided" && current && current.outcome !== "rejected")
     actions.push({
       key: "support", label: "Engager", title: "Appui ou orientation", path: "support/", variant: "accent",
@@ -286,7 +286,7 @@ export default function ClaimDetail({ id }: { id: string }) {
                         { label: "Aides déjà reçues", value: c.aid_received },
                         { label: "Canal", value: c.channel_label },
                         { label: "Identité", value: c.no_identity_document ? (c.community_validated ? `Sans pièce — validation communautaire${c.community_validation_note ? ` (${c.community_validation_note})` : ""}` : "Sans pièce — validation communautaire à faire") : "Pièce présentée" },
-                        { label: "Liste de l'exploitant", value: c.in_operator_list === null ? "Non rapprochée" : c.in_operator_list ? "Présent" : "Absent de la liste" },
+                        { label: "Liste du promoteur", value: c.in_operator_list === null ? "Non rapprochée" : c.in_operator_list ? "Présent" : "Absent de la liste" },
                         { label: "Registre social unique", value: c.rsu_status_label },
                         { label: "Enregistrée par", value: c.recorded_by_name },
                       ]),
@@ -456,8 +456,8 @@ export default function ClaimDetail({ id }: { id: string }) {
                 {[
                   ["Décision motivée", c.deadlines.decision],
                   ["Mesure d'urgence", c.deadlines.urgent],
-                  ["Transmission à l'exploitant", c.deadlines.operator_transmit],
-                  ["Réponse de l'exploitant", c.deadlines.operator_response],
+                  ["Transmission au promoteur", c.deadlines.operator_transmit],
+                  ["Réponse du promoteur", c.deadlines.operator_response],
                   ["Fin du suivi", c.deadlines.followup],
                   ["Fin du délai de contestation", c.appeal_deadline],
                 ]

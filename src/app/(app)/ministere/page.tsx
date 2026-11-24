@@ -78,7 +78,7 @@ export default function MinistryPage() {
     <>
       <PageHeader
         title="Tableau de bord du dispositif"
-        subtitle="Vue agrégée pour le ministère, sans aucun nom. Mines, pétrole, énergie : demandes, délais, décisions, accompagnement, plaintes et articulation avec l'exploitant."
+        subtitle="Vue agrégée pour le ministère, sans aucun nom. Tous secteurs (mines, énergie, routes, aménagement urbain…) : demandes, délais, décisions, accompagnement, plaintes et articulation avec l'exploitant."
       />
       <Alert tone="info">
         <span className="flex items-center gap-2"><ShieldCheck className="size-4" />Aucune donnée nominative. Toute zone de moins de {data.min_zone} ménages est fusionnée avec la zone voisine. Mis à jour le {formatDate(data.generated_at, true)}.</span>
@@ -107,7 +107,7 @@ export default function MinistryPage() {
           ["En retard", s.overdue],
           ["Urgences", s.urgent],
           ["Ménages éligibles", s.eligible],
-          ["Absents de la liste de l'exploitant", s.absent_from_operator_list],
+          ["Absents de la liste du promoteur", s.absent_from_operator_list],
         ].map(([l, v]) => (
           <Card key={l as string} className="p-4">
             <p className="text-xs text-muted">{l}</p>

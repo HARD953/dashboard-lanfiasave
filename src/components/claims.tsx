@@ -174,7 +174,7 @@ const EMPTY = {
   women_head: false,
   has_dependent_person: false,
   channel: "relay",
-  sector: "mining",
+  sector: "",
   impacts: [] as string[],
   profile: "",
   sources: ["self"] as string[],
@@ -208,7 +208,7 @@ export function ClaimFormModal({ open, onClose, onSaved }: { open: boolean; onCl
   const set = (k: keyof typeof EMPTY) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setF({ ...f, [k]: e.target instanceof HTMLInputElement && e.target.type === "checkbox" ? e.target.checked : e.target.value });
   const toggle = (k: "impacts" | "sources", v: string) => setF({ ...f, [k]: f[k].includes(v) ? f[k].filter((x) => x !== v) : [...f[k], v] });
-  const impacts = meta?.impacts.filter((i) => i.sectors.includes(f.sector)) ?? [];
+  const impacts = meta?.impacts.filter((i) => !f.sector || i.sectors.includes(f.sector)) ?? [];
 
   async function save() {
     setSaving(true);
@@ -286,13 +286,14 @@ export function ClaimFormModal({ open, onClose, onSaved }: { open: boolean; onCl
           <legend className="mb-2 text-sm font-semibold text-navy-900">L&apos;impact</legend>
           <Field label="Secteur">
             <Select value={f.sector} onChange={(e) => setF({ ...f, sector: e.target.value, impacts: [] })}>
+              <option value="">Choisir le secteur</option>
               {meta?.sectors.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
             </Select>
           </Field>
           <Field label="Site ou projet">
             <Select value={f.operation} onChange={set("operation")}>
               <option value="">—</option>
-              {operations?.results.filter((o) => ["mining_project", "oil_gas", "energy", "illegal_mining", "infrastructure"].includes(o.kind)).map((o) => (
+              {operations?.results.map((o) => (
                 <option key={o.id} value={o.id}>{o.title}</option>
               ))}
             </Select>
@@ -343,7 +344,7 @@ export function ClaimFormModal({ open, onClose, onSaved }: { open: boolean; onCl
           {f.community_validated && (
             <div className="sm:col-span-2"><Field label="Validation communautaire" hint="Ex. : devant le chef de village et deux témoins"><Input value={f.community_validation_note} onChange={set("community_validation_note")} /></Field></div>
           )}
-          <label className="flex items-center gap-2 text-sm sm:col-span-2"><input type="checkbox" checked={f.consent_operator_contact} onChange={set("consent_operator_contact")} /> Accepte que l&apos;exploitant reçoive ses coordonnées</label>
+          <label className="flex items-center gap-2 text-sm sm:col-span-2"><input type="checkbox" checked={f.consent_operator_contact} onChange={set("consent_operator_contact")} /> Accepte que le promoteur reçoive ses coordonnées</label>
           <label className="flex items-center gap-2 text-sm font-medium text-danger"><input type="checkbox" checked={f.urgent} onChange={set("urgent")} /> Urgence</label>
           {f.urgent && (
             <Select value={f.urgency_reason} onChange={set("urgency_reason")} aria-label="Motif d'urgence">
